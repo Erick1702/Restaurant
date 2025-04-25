@@ -1,0 +1,108 @@
+﻿@model RegistroViewModel
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+	ViewData["Title"] = "Registro";
+}
+
+<h1>Registrate</h1>
+
+<div class="card">
+	<div class="card-body">
+		<form asp-action="Registro">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+			<div class="mb-3">
+				<label asp-for="Email" class="form-label"></label>
+				<input asp-for="Email" autocomplete="off" class="form-control" />
+				<span asp-validation-for="Email" class="text-danger"></span>
+			</div>
+
+			<div class="mb-3">
+				<label asp-for="Nombre" class="form-label"></label>
+				<input asp-for="Nombre" autocomplete="off" class="form-control" />
+				<span asp-validation-for="Nombre" class="text-danger"></span>
+			</div>
+
+			<div class="mb-3">
+				<label asp-for="Password" class="form-label"></label>
+				<input asp-for="Password" autocomplete="off" class="form-control" />
+				<span asp-validation-for="Password" class="text-danger"></span>
+			</div>
+
+			<button class="btn-primary btn">Registrate</button>
+			<a class="btn btn-success" asp-action="login">Deseo Loguearme</a>
+
+
+		</form>
+
+	</div>
+
+
+</div>
+
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+}
+
+
+
+
+
+@* 
+
+<div asp-validation-summary="ModelOnly" class="text-danger"> </div>
+<form asp-controller="Usuario" asp-action="Registro">
+
+
+	<div class="mb-3">
+		<label asp-for="Nombre" class="form-label"></label>
+		<input asp-for="Nombre" class="form-control"/>
+		<span asp-validation-for="Nombre" class="text-danger"></span>
+	</div>
+
+	<div class="mb-3">
+		<label asp-for="ApellidoP" class="form-label"></label>
+		<input asp-for="ApellidoP" class="form-control" />
+		<span asp-validation-for="ApellidoP" class="text-danger"></span>
+	</div>
+
+	<div class="mb-3">
+		<label asp-for="ApellidoM" class="form-label"></label>
+		<input asp-for="ApellidoM" class="form-control" />
+		<span asp-validation-for="ApellidoM" class="text-danger"></span>
+	</div>
+
+	<div class="mb-3">
+		<label asp-for="Dni" class="form-label"></label>
+		<input asp-for="Dni" class="form-control" />
+		<span asp-validation-for="Dni" class="text-danger"></span>
+	</div>
+
+	<div class="mb-3">
+		<label asp-for="Sexo" class="form-label"></label>
+		<input asp-for="Sexo" class="form-control" />
+		<span asp-validation-for="Sexo" class="text-danger"></span>
+	</div>
+
+	<div class="mb-3">
+		<label asp-for="Email" class="form-label"></label>
+		<input asp-for="Email" class="form-control" />
+		<span asp-validation-for="Email" class="text-danger"></span>
+	</div>
+
+	<div class="mb-3">
+		<label asp-for="Password" class="form-label"></label>
+		<input asp-for="Password" class="form-control" />
+		<span asp-validation-for="Password" class="text-danger"></span>
+	</div>
+
+
+	<button type="submit" class="btn-primary btn">Registrate</button>
+
+
+</form>
+ *@
+
