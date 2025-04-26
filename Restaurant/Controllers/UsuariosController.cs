@@ -37,7 +37,12 @@ namespace Restaurant.Controllers
             {
                 Email = modelo.Email,
                 UserName = modelo.Email,
-                Nombre = modelo.Nombre
+                Nombre = modelo.Nombre,
+                ApellidoP = modelo.ApellidoP,
+                ApellidoM = modelo.ApellidoM,
+                Dni = modelo.Dni,
+                Direccion = modelo.Direccion
+
             };
 
             var resultado=await userManager.CreateAsync(usuario, password: modelo.Password);
