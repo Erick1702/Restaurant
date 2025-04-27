@@ -2,7 +2,7 @@
 {
     public class DetalleComanda
     {
-        public int Id { get; set; }
+        //public int Id { get; set; }
         public int ComandaId { get; set; }
         public Comanda? Comanda { get; set; }
         public int? PlatoId { get; set; }

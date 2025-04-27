@@ -3,12 +3,14 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Restaurant.Datos;
 using Restaurant.Models;
+using Restaurant.Servicios;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddTransient<IServicoUsuarios, ServicoUsuarios>();
 //Tutorial
 builder.Services.AddDbContextFactory<ApplicationDbContext>(opciones=>
 opciones.UseSqlServer("name=DefaultConnection"));

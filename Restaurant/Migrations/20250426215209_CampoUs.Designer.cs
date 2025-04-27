@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Restaurant.Datos;
 
@@ -11,9 +12,11 @@ using Restaurant.Datos;
 namespace Restaurant.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250426215209_CampoUs")]
+    partial class CampoUs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -193,16 +196,22 @@ namespace Restaurant.Migrations
 
             modelBuilder.Entity("Restaurant.Models.DetalleComanda", b =>
                 {
-                    b.Property<int>("ComandaId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("PlatoId")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Cantidad")
                         .HasColumnType("int");
 
+                    b.Property<int>("ComandaId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("EstadoId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PlatoId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Subtotal")
@@ -211,7 +220,9 @@ namespace Restaurant.Migrations
                     b.Property<string>("Sugerencia")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ComandaId", "PlatoId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("ComandaId");
 
                     b.HasIndex("EstadoId");
 
@@ -572,9 +583,7 @@ namespace Restaurant.Migrations
 
                     b.HasOne("Restaurant.Models.Plato", "Plato")
                         .WithMany("DetalleComandas")
-                        .HasForeignKey("PlatoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PlatoId");
 
                     b.Navigation("Comanda");
 

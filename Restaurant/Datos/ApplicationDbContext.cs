@@ -14,6 +14,13 @@ namespace Restaurant.Datos
         {
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<DetalleComanda>().HasKey(g => new { g.ComandaId, g.PlatoId }); // Definir la clave compuesta
+        }
+
         public DbSet<Estado> Estados { get; set; }
         public DbSet<Mesa> Mesas { get; set; }
         public DbSet<TipoPlato> TipoPlatos { get; set; }
