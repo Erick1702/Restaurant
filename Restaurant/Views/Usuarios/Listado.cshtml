@@ -1,0 +1,60 @@
+﻿@model UsuarioListadoViewModel
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+	ViewData["Title"] = "Listado de Usuarios";
+}
+
+<h1>Listado de Usuarios</h1>
+
+@if (Model.Mensaje is not null)
+{
+	<div class="alert alert-success" role="alert">
+		@Model.Mensaje
+	</div>
+}
+
+@if (Model.Usuarios is not null)
+{
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				@* <th scope="col">ID</th> *@
+				<th scope="col">Nombre</th>
+				<th scope="col">Apellido Paterno</th>
+				<th scope="col">Apellido Materno</th>
+				<th scope="col">DNI</th>
+				<th scope="col">Sexo</th>
+				<th scope="col">Dirección</th>
+				<th scope="col">Email</th>
+				<th scope="col">Acciones</th>
+			</tr>
+
+		</thead>
+		<tbody>
+			@foreach (var usuario in Model.Usuarios)
+			{
+				<tr>
+					@* <td>@usuario.Id</td> *@
+					<td>@usuario.Nombre</td>
+					<td>@usuario.ApellidoP</td>
+					<td>@usuario.ApellidoM</td>
+					<td>@usuario.Dni</td>
+					<td>@usuario.Sexo</td>
+					<td>@usuario.Direccion</td>
+					<td>@usuario.Email</td>
+					<td>
+						<a asp-action="Editar" asp-route-id="@usuario.Id" class="btn btn-primary">Editar</a>
+						<a asp-action="Eliminar" asp-route-id="@usuario.Id" class="btn btn-danger">Eliminar</a>
+						<a asp-action="RolesUsuario" asp-route-usuarioId="@usuario.Id" class="btn btn-primary">Editar Roles</a>
+					</td>
+				</tr>
+			}
+		</tbody>
+
+	</table>
+}else
+{
+	<p>No hay usuarios para mostrar</p>
+}

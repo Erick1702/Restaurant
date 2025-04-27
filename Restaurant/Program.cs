@@ -4,16 +4,21 @@ using Microsoft.EntityFrameworkCore;
 using Restaurant.Datos;
 using Restaurant.Models;
 using Restaurant.Servicios;
+using Restaurant.Utilidades;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+
+
 builder.Services.AddTransient<IServicoUsuarios, ServicoUsuarios>();
 //Tutorial
 builder.Services.AddDbContextFactory<ApplicationDbContext>(opciones=>
-opciones.UseSqlServer("name=DefaultConnection"));
+opciones.UseSqlServer("name=DefaultConnection")
+.UseSeeding(Seeding.Aplicar)
+.UseAsyncSeeding(Seeding.AplicarAsync));
 
 builder.Services.AddIdentity<Usuario, IdentityRole>(opciones =>
 {
