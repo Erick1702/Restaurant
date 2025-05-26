@@ -188,7 +188,7 @@ namespace Restaurant.Migrations
 
                     b.HasIndex("UsuarioId");
 
-                    b.ToTable("Comandas");
+                    b.ToTable("Comandas", (string)null);
                 });
 
             modelBuilder.Entity("Restaurant.Models.DetalleComanda", b =>
@@ -217,7 +217,7 @@ namespace Restaurant.Migrations
 
                     b.HasIndex("PlatoId");
 
-                    b.ToTable("DetalleComandas");
+                    b.ToTable("DetalleComandas", (string)null);
                 });
 
             modelBuilder.Entity("Restaurant.Models.Estado", b =>
@@ -242,7 +242,7 @@ namespace Restaurant.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Estados");
+                    b.ToTable("Estados", (string)null);
                 });
 
             modelBuilder.Entity("Restaurant.Models.Factura", b =>
@@ -267,7 +267,7 @@ namespace Restaurant.Migrations
                     b.HasIndex("ComandaId")
                         .IsUnique();
 
-                    b.ToTable("Facturas");
+                    b.ToTable("Facturas", (string)null);
                 });
 
             modelBuilder.Entity("Restaurant.Models.Mesa", b =>
@@ -300,7 +300,7 @@ namespace Restaurant.Migrations
 
                     b.HasIndex("EstadoId");
 
-                    b.ToTable("Mesas");
+                    b.ToTable("Mesas", (string)null);
                 });
 
             modelBuilder.Entity("Restaurant.Models.Plato", b =>
@@ -333,7 +333,7 @@ namespace Restaurant.Migrations
 
                     b.HasIndex("TipoPlatoId");
 
-                    b.ToTable("Platos");
+                    b.ToTable("Platos", (string)null);
                 });
 
             modelBuilder.Entity("Restaurant.Models.TipoConsumo", b =>
@@ -358,7 +358,7 @@ namespace Restaurant.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TipoConsumos");
+                    b.ToTable("TipoConsumos", (string)null);
                 });
 
             modelBuilder.Entity("Restaurant.Models.TipoPlato", b =>
@@ -383,7 +383,7 @@ namespace Restaurant.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TipoPlatos");
+                    b.ToTable("TipoPlatos", (string)null);
                 });
 
             modelBuilder.Entity("Restaurant.Models.Usuario", b =>

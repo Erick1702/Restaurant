@@ -5,12 +5,16 @@ using Restaurant.Datos;
 using Restaurant.Models;
 using Restaurant.Servicios;
 using Restaurant.Utilidades;
+using Rotativa.AspNetCore;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+// Recaptcha configuration
+builder.Services.Configure<GoogleReCaptchaConfig>(
+    builder.Configuration.GetSection("GoogleReCaptcha"));
 
 
 builder.Services.AddTransient<IServicoUsuarios, ServicoUsuarios>();
@@ -26,14 +30,25 @@ builder.Services.AddIdentity<Usuario, IdentityRole>(opciones =>
 }).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
 
-builder.Services.PostConfigure<CookieAuthenticationOptions>(IdentityConstants.ApplicationScheme, opciones =>
+
+//builder.Services.PostConfigure<CookieAuthenticationOptions>(IdentityConstants.ApplicationScheme, opciones =>
+//{
+//    opciones.LogoutPath = "/usuarios/login";
+//    opciones.AccessDeniedPath = "/usuarios/login";
+//});
+
+builder.Services.ConfigureApplicationCookie(options =>
 {
-    opciones.LogoutPath = "/usuarios/login";
-    opciones.AccessDeniedPath = "/usuarios/login";
+    options.LoginPath = "/Usuarios/Login";
+    options.AccessDeniedPath = "/Usuarios/AccesoDenegado";
 });
 
+
 ////
+///RotativaConfiguration.Setup(app.Environment.WebRootPath, "Rotativa");
 var app = builder.Build();
+
+//RotativaConfiguration.Setup(app.Environment.WebRootPath, "Rotativa");
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -45,7 +60,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
-
+//app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
@@ -55,5 +70,10 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
+
+//pdf
+IWebHostEnvironment env = app.Environment;
+Rotativa.AspNetCore.RotativaConfiguration.Setup(env.WebRootPath, "Rotativa");
+//
 
 app.Run();

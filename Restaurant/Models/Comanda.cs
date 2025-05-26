@@ -10,6 +10,8 @@
         public Usuario? Usuario { get; set; }
         public int? TipoConsumoId { get; set; }
         public TipoConsumo? TipoConsumo { get; set; }
+        public int? EstadoId { get; set; }
+        public Estado? Estado { get; set; }
         public List<DetalleComanda> DetalleComandas { get; set; } = new List<DetalleComanda>();
         public Factura? Factura { get; set; }
     }

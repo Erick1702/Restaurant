@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Plato>
+
+<h2>Platos</h2>
+
+<form method="get" asp-action="Index" class="form-inline mb-3">
+    <div class="form-group">
+        <select name="tipoPlatoId" class="form-control mr-2" asp-items="ViewBag.TipoPlatoId">
+            <option value="">-- Todos los Tipos --</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Filtrar</button>
+    <a asp-action="Index" class="btn btn-secondary ml-2">Limpiar</a>
+</form>
+
+<a asp-action="Create" class="btn btn-primary mb-3">Crear Nuevo Plato</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Tipo de Plato</th>
+            <th>Precio</th>
+            <th>Activo</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Nombre</td>
+                <td>@item.TipoPlato?.Nombre</td>
+                <td>@item.Precio.ToString("C")</td>
+                <td>@(item.Activo ? "Sí" : "No")</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Editar</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

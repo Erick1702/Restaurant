@@ -11,6 +11,6 @@ namespace Restaurant.Models
         [StringLength(500)]
         public string? Descripcion { get; set; }
         public bool Activo { get; set; } = true;
-        public List<Plato> Platos { get; set; }
+        public List<Plato> Platos { get; set; } = new List<Plato>();
     }
 }

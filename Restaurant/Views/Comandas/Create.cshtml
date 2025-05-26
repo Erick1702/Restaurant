@@ -1,0 +1,115 @@
+﻿@model ComandaCreateViewModel
+
+@{
+    ViewData["Title"] = "Crear Comanda";
+    var platos = ViewBag.Platos as SelectList;
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label>Mesa</label>
+        <select asp-for="MesaId" class="form-control" asp-items="ViewBag.MesaId">
+            <option value="">-- Seleccionar Mesa --</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>Tipo Consumo</label>
+        <select asp-for="TipoConsumoId" class="form-control" asp-items="ViewBag.TipoConsumoId">
+            <option value="">-- Seleccionar Tipo Consumo --</option>
+        </select>
+    </div>
+
+    <hr />
+    <h4>Agregar Platos</h4>
+
+    <div id="detallesContainer">
+        <!-- Aquí se agregarán dinámicamente los platos -->
+    </div>
+
+    <button type="button" class="btn btn-primary" onclick="agregarDetalle()">Agregar Plato</button>
+
+    <hr />
+
+    <button type="submit" class="btn btn-success">Guardar Comanda</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>
+
+@section Scripts {
+    <script>
+        // Creamos un objeto donde guardamos el precio de cada plato
+        var platosPrecios = {
+        @foreach (var plato in platos)
+        {
+            <text>@plato.Value: @plato.Text.Split('|')[1],</text>
+            // Modificado más abajo para incluir precio
+        }
+        };
+
+        function agregarDetalle() {
+            var index = document.querySelectorAll('#detallesContainer .detalle-item').length;
+
+            var detalleHtml = `
+                <div class="detalle-item mb-3">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <select name="Detalles[${index}].PlatoId" class="form-control" onchange="actualizarPrecio(this)">
+                                <option value="">-- Seleccionar Plato --</option>
+        @foreach (var plato in platos)
+        {
+                                        <option value="@plato.Value">@plato.Text.Split('|')[0]</option>
+        }
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control precio" placeholder="Precio" readonly />
+                        </div>
+                        <div class="col-md-2">
+                            <input type="number" name="Detalles[${index}].Cantidad" class="form-control cantidad" placeholder="Cantidad" min="1" value="1" oninput="actualizarSubtotal(this)" />
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control subtotal" placeholder="Subtotal" readonly />
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-danger" onclick="eliminarDetalle(this)">Eliminar</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('detallesContainer').insertAdjacentHTML('beforeend', detalleHtml);
+        }
+
+        function eliminarDetalle(boton) {
+            boton.closest('.detalle-item').remove();
+        }
+
+        function actualizarPrecio(select) {
+            var selectedValue = select.value;
+            var container = select.closest('.detalle-item');
+            var precioInput = container.querySelector('.precio');
+            var cantidadInput = container.querySelector('.cantidad');
+            var subtotalInput = container.querySelector('.subtotal');
+
+            var precio = platosPrecios[selectedValue] || 0;
+            precioInput.value = precio.toFixed(2);
+
+            // Actualizamos el subtotal
+            var cantidad = parseInt(cantidadInput.value) || 0;
+            subtotalInput.value = (precio * cantidad).toFixed(2);
+        }
+
+        function actualizarSubtotal(cantidadInput) {
+            var container = cantidadInput.closest('.detalle-item');
+            var precioInput = container.querySelector('.precio');
+            var subtotalInput = container.querySelector('.subtotal');
+
+            var precio = parseFloat(precioInput.value) || 0;
+            var cantidad = parseInt(cantidadInput.value) || 0;
+
+            subtotalInput.value = (precio * cantidad).toFixed(2);
+        }
+    </script>
+}

@@ -1,0 +1,44 @@
+﻿@model Comanda
+
+<h2>Agregar Platos a la Comanda</h2>
+
+<form asp-action="AgregarDetalle" method="post">
+    <input type="hidden" name="comandaId" value="@Model.Id" />
+
+    <div class="form-group">
+        <label>Plato</label>
+        <select name="platoId" class="form-control" asp-items="ViewBag.PlatoId"></select>
+    </div>
+
+    <div class="form-group">
+        <label>Cantidad</label>
+        <input type="number" name="cantidad" class="form-control" min="1" value="1" />
+    </div>
+
+    <button type="submit" class="btn btn-success">Agregar Plato</button>
+    <a asp-action="Index" class="btn btn-secondary">Terminar</a>
+</form>
+
+<hr />
+
+<h3>Platos Agregados</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Plato</th>
+            <th>Cantidad</th>
+            <th>Subtotal</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.DetalleComandas)
+        {
+            <tr>
+                <td>@item.Plato?.Nombre</td>
+                <td>@item.Cantidad</td>
+                <td>@item.Subtotal.ToString("C")</td>
+            </tr>
+        }
+    </tbody>
+</table>

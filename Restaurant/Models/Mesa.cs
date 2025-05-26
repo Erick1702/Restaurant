@@ -15,6 +15,6 @@ namespace Restaurant.Models
         public int? EstadoId { get; set; }
         public Estado? Estado { get; set; }
 
-        public List<Comanda> Comandas { get; set; }
+        public List<Comanda> Comandas { get; set; } = new List<Comanda>();
     }
 }

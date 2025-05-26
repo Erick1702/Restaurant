@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Restaurant.Datos;
 using Restaurant.Models;
 using Restaurant.Servicios;
+using System.Text.Json;
 
 namespace Restaurant.Controllers
 {
@@ -14,14 +15,17 @@ namespace Restaurant.Controllers
         private readonly UserManager<Usuario> userManager;
         private readonly SignInManager<Usuario> signInManager;
         private readonly ApplicationDbContext context;
+        private readonly IConfiguration config;
 
         public UsuariosController(UserManager<Usuario> userManager,
                                   SignInManager<Usuario> signInManager,
-                                  ApplicationDbContext context)
+                                  ApplicationDbContext context,
+                                  IConfiguration config)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.context = context;
+            this.config = config;
         }
 
         public IActionResult Registro()
@@ -77,6 +81,11 @@ namespace Restaurant.Controllers
             return View();
         }
 
+        [AllowAnonymous]
+        public IActionResult AccesoDenegado()
+        {
+            return View();
+        }
 
         [HttpPost]
         [AllowAnonymous]
@@ -84,6 +93,13 @@ namespace Restaurant.Controllers
         {
             if (!ModelState.IsValid)
             {
+                return View(modelo);
+            }
+
+            var token = Request.Form["g-recaptcha-response"];
+            if (!await EsReCaptchaValido(token))
+            {
+                ModelState.AddModelError("", "Verificación reCAPTCHA fallida.");
                 return View(modelo);
             }
 
@@ -102,6 +118,8 @@ namespace Restaurant.Controllers
 
 
         [HttpPost]
+
+        [AllowAnonymous]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
@@ -109,7 +127,7 @@ namespace Restaurant.Controllers
         }
 
         [HttpGet]
-        //[Authorize(Roles=Constantes.ROL_ADMINISTRADOR)]
+        [Authorize(Roles=Constantes.ROL_ADMINISTRADOR)]
         public async Task<IActionResult>Listado(string? mensaje=null)
         {
             var usuarios = await context.Users.Select(x => new UsuarioViewModel
@@ -133,7 +151,7 @@ namespace Restaurant.Controllers
 
 
         [HttpGet]
-        //[Authorize(Roles=Constantes.ROL_ADMINISTRADOR)]
+        [Authorize(Roles=Constantes.ROL_ADMINISTRADOR)]
         public async Task<IActionResult> RolesUsuario(string usuarioId)
         {
             var usuario = await userManager.FindByIdAsync(usuarioId); // Buscar por Id
@@ -163,7 +181,7 @@ namespace Restaurant.Controllers
         }
 
         [HttpPost]
-        //[Authorize(Roles=Constantes.ROL_ADMINISTRADOR)]
+        [Authorize(Roles=Constantes.ROL_ADMINISTRADOR)]
         public async Task<IActionResult>EditarRoles (EditarRolesViewModel modelo)
         {
             var usuario = await userManager.FindByIdAsync(modelo.UsuarioId);
@@ -180,6 +198,19 @@ namespace Restaurant.Controllers
             var mensaje = $"Los roles del {usuario.Email} han sido actualizados";
             return RedirectToAction("Listado", new { mensaje });
         }
+
+        private async Task<bool> EsReCaptchaValido(string token)
+        {
+            var secret = config.GetValue<string>("GoogleReCaptcha:SecretKey");
+            var httpClient = new HttpClient();
+            var response = await httpClient.PostAsync(
+                $"https://www.google.com/recaptcha/api/siteverify?secret={secret}&response={token}",
+                null);
+
+            var json = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<JsonElement>(json).GetProperty("success").GetBoolean();
+        }
+
 
     }
 }
