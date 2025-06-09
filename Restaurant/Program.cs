@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Restaurant.Datos;
 using Restaurant.Models;
 using Restaurant.Servicios;
@@ -27,6 +28,11 @@ opciones.UseSqlServer("name=DefaultConnection")
 builder.Services.AddIdentity<Usuario, IdentityRole>(opciones =>
 {
     opciones.SignIn.RequireConfirmedAccount = false;
+
+    opciones.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
+    opciones.Lockout.MaxFailedAccessAttempts = 3;
+    opciones.Lockout.AllowedForNewUsers = true;
+
 }).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
 

@@ -104,7 +104,14 @@ namespace Restaurant.Controllers
             }
 
             var resultado = await signInManager.PasswordSignInAsync(modelo.Email,
-                modelo.Password,modelo.Recuerdame, lockoutOnFailure: false);
+                modelo.Password,modelo.Recuerdame, lockoutOnFailure: true);
+
+            if (resultado.IsLockedOut)
+            {
+
+                ModelState.AddModelError(string.Empty, "Tu cuenta ha sido bloqueada temporalmente por múltiples intentos fallidos. Intenta nuevamente más tarde.");
+                return View(modelo);
+            }
 
             if (resultado.Succeeded)
             {
@@ -114,6 +121,9 @@ namespace Restaurant.Controllers
                 ModelState.AddModelError(string.Empty, "Nombre de usuario o password incorrectos.");
                 return View(modelo);
             }
+
+            
+            
         }
 
 

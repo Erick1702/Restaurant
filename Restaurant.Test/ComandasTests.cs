@@ -94,14 +94,52 @@ namespace Restaurant.Test
             Assert.AreEqual(1, _context.DetalleComandas.Count());
         }
 
+        //[TestMethod]
+        //public async Task Edit_Post_ActualizaComanda()
+        //{
+        //    // Arrange: Crear una comanda
+        //    var comanda = new Comanda
+        //    {
+        //        MesaId = 1,
+        //        TipoConsumoId = 1,
+        //        UsuarioId = "usuario123",
+        //        Fecha = DateTime.Now,
+        //        EstadoId = 1
+        //    };
+        //    _context.Comandas.Add(comanda);
+        //    await _context.SaveChangesAsync();
+
+        //    // Modificar datos
+        //    comanda.MesaId = 1;
+        //    comanda.TipoConsumoId = 1;
+
+        //    // Act
+        //    var result = await _controller.Edit(comanda.Id) as RedirectToActionResult;
+
+        //    // Assert
+        //    Assert.IsNotNull(result);
+        //    Assert.AreEqual("Index", result.ActionName);
+        //    Assert.AreEqual(1, _context.Comandas.Count());
+        //}
+
         [TestMethod]
         public async Task Edit_Post_ActualizaComanda()
         {
-            // Arrange: Crear una comanda
+            // 1. Arrange: 
+            // — asegurémonos de tener Mesa, TipoConsumo y un Plato en la base de datos de prueba
+            var mesa = new Mesa { Numero="1"};
+            var tipoConsumo = new TipoConsumo { Nombre="local" };
+            var plato = new Plato { Nombre = "Test", Precio = 10m };
+            _context.Mesas.Add(mesa);
+            _context.TipoConsumos.Add(tipoConsumo);
+            _context.Platos.Add(plato);
+            await _context.SaveChangesAsync();
+
+            // — crea la comanda original
             var comanda = new Comanda
             {
-                MesaId = 1,
-                TipoConsumoId = 1,
+                MesaId = mesa.Id,
+                TipoConsumoId = tipoConsumo.Id,
                 UsuarioId = "usuario123",
                 Fecha = DateTime.Now,
                 EstadoId = 1
@@ -109,18 +147,42 @@ namespace Restaurant.Test
             _context.Comandas.Add(comanda);
             await _context.SaveChangesAsync();
 
-            // Modificar datos
-            comanda.MesaId = 1;
-            comanda.TipoConsumoId = 1;
-
-            // Act
-            var result = await _controller.Edit(comanda.Id, comanda) as RedirectToActionResult;
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual("Index", result.ActionName);
-            Assert.AreEqual(1, _context.Comandas.Count());
+            // — prepara el ViewModel con nuevos detalles
+            var model = new ComandaEditViewModel
+            {
+                Id = comanda.Id,
+                MesaId = mesa.Id,
+                TipoConsumoId = tipoConsumo.Id,
+                Detalles = new List<DetalleEditItemViewModel>
+        {
+            new DetalleEditItemViewModel
+            {
+                PlatoId = plato.Id,
+                Cantidad = 2
+            }
         }
+            };
+
+            // limpias ModelState para simular validez
+            _controller.ModelState.Clear();
+
+            // 2. Act: llama al POST Edit
+            var result = await _controller.Edit(comanda.Id, model)
+                                 as RedirectToActionResult;
+
+            // 3. Assert: 
+            Assert.IsNotNull(result, "Debe redirigir tras un POST válido");
+            Assert.AreEqual("Index", result.ActionName);
+
+            // — Comprueba que ahora hay detalles nuevos
+            var comandasEnBd = _context.Comandas
+                .Include(c => c.DetalleComandas)
+                .First(c => c.Id == comanda.Id);
+            Assert.AreEqual(1, comandasEnBd.DetalleComandas.Count);
+            Assert.AreEqual(plato.Id,
+                comandasEnBd.DetalleComandas.First().PlatoId);
+        }
+
     }
 }
 

@@ -56,7 +56,7 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Platos" asp-action="">Platos</a>
                             </li>
                         }
-                        @if (User.IsInRole(Constantes.ROL_ADMINISTRADOR) || User.IsInRole(Constantes.ROL_MESERO))
+                        @if (User.IsInRole(Constantes.ROL_ADMINISTRADOR) || User.IsInRole(Constantes.ROL_MESERO) || User.IsInRole(Constantes.ROL_COCINERO))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Comandas" asp-action="">Comandas</a>
@@ -75,6 +75,7 @@
                     </ul>
 
                     <partial name="LinksLogin"></partial>
+					
                 </div>
             </div>
         </nav>
@@ -82,6 +83,8 @@
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
+            @await Html.PartialAsync("_SvgSprite")
+
         </main>
     </div>
 
@@ -94,5 +97,9 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    <svg style="display: none;">
+        <use href="~/icons/sprite.svg"></use>
+    </svg>
+    
 </body>
 </html>

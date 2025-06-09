@@ -7,7 +7,11 @@
 <h1>Facturas</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-primary">Crear Nueva Factura</a>
+    <a asp-action="Create" class="btn btn-primary">
+        <svg width="24" height="24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <use xlink:href="#icon-pencil" />
+        </svg>Crear Nueva Factura
+    </a>
 </p>
 
 <table class="table table-striped">
@@ -15,7 +19,7 @@
         <tr>
             <th>Id</th>
             <th>Fecha</th>
-            <th>Comanda Id</th>
+            <th>Comanda</th>
             <th>Total</th>
             <th>Acciones</th>
         </tr>
@@ -25,13 +29,25 @@
         {
             <tr>
                 <td>@item.Id</td>
-                <td>@item.Fecha.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>@item.Fecha.ToString("dd/MM/yyyy ")</td>
                 <td>@item.ComandaId</td>
                 <td>@item.Total.ToString("C")</td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">Detalles</a>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Editar</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Eliminar</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">
+                        <svg width="24" height="24" stroke="currentColor" fill="none" stroke-width="2">
+                            <use xlink:href="#icon-list-details" />
+                        </svg>Detalles
+                    </a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">
+                        <svg width="24" height="24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <use xlink:href="#icon-edit" />
+                        </svg>Editar
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">
+                        <svg width="24" height="24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <use xlink:href="#icon-pencil-x" />
+                        </svg>Eliminar
+                    </a>
                 </td>
             </tr>
         }

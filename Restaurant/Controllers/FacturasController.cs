@@ -21,6 +21,7 @@ namespace Restaurant.Controllers
         }
 
         // GET: Facturas
+        [Authorize(Roles = $"{Constantes.ROL_ADMINISTRADOR},{Constantes.ROL_CAJERO}")]
         public async Task<IActionResult> Index()
         {
             var facturas = _context.Facturas.Include(f => f.Comanda);

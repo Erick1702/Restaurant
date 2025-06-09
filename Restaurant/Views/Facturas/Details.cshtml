@@ -28,7 +28,8 @@
         <tr>
             <th>Plato</th>
             <th>Cantidad</th>
-            <th>Subtotal</th>
+            <th>Precio</th>
+            @* <th>Subtotal</th> *@
         </tr>
     </thead>
     <tbody>
@@ -37,7 +38,8 @@
             <tr>
                 <td>@item.Plato?.Nombre</td>
                 <td>@item.Cantidad</td>
-                <td>@item.Subtotal.ToString("C")</td>
+                <td>@item.Plato?.Precio</td>
+                @* <td>@item.Subtotal.ToString("C")</td> *@
             </tr>
         }
     </tbody>

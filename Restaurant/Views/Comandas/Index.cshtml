@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Comanda>
+﻿@using Restaurant.Servicios
+@model IEnumerable<Comanda>
 
 @{
     ViewData["Title"] = "Listado de Comandas";
@@ -6,17 +7,23 @@
 
 <h2>Listado de Comandas</h2>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Crear Nueva Comanda</a>
-</p>
+<button>
+    <a asp-action="Create" class="btn btn-primary">
+        <svg width="24" height="24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <use xlink:href="#icon-pencil" />
+        </svg>Crear Nueva Comanda
+    </a>
+</button>
 
 <table class="table">
     <thead>
         <tr>
+			<th>Comanda</th>
             <th>Fecha</th>
             <th>Mesa</th>
             <th>Tipo Consumo</th>
             <th>Usuario</th>
+            <th>Estado</th>
             <th>Acciones</th>
         </tr>
     </thead>
@@ -24,14 +31,46 @@
         @foreach (var item in Model)
         {
             <tr>
+                <td>Comanda @item.Id</td>
                 <td>@item.Fecha.ToString("dd/MM/yyyy HH:mm")</td>
                 <td>@item.Mesa?.Numero</td>
                 <td>@item.TipoConsumo?.Nombre</td>
                 <td>@item.Usuario?.UserName</td>
+                <td>@item.Estado?.Nombre</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Editar</a>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">Detalles</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Eliminar</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">
+                        <svg width="24" height="24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <use xlink:href="#icon-edit" />
+                        </svg>Editar
+                    </a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">
+                        <svg width="24" height="24" stroke="currentColor" fill="none" stroke-width="2">
+                            <use xlink:href="#icon-list-details" />
+                        </svg>
+
+
+                        Detalles</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">
+                        <svg width="24" height="24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <use xlink:href="#icon-pencil-x" />
+                        </svg>Eliminar
+                    </a>
+                    @if (User.IsInRole(Constantes.ROL_ADMINISTRADOR) || User.IsInRole(Constantes.ROL_COCINERO))
+                    {
+                        @if (item.Estado?.Nombre == "Emision")
+                        {
+                            <form asp-action="CambiarEstado" asp-route-id="@item.Id" asp-route-estado="Preparacion" method="post" style="display:inline;">
+                                <button type="submit" class="btn btn-warning btn-sm">Preparación</button>
+                            </form>
+                        }
+
+                        @if (item.Estado?.Nombre == "Preparacion")
+                        {
+                            <form asp-action="CambiarEstado" asp-route-id="@item.Id" asp-route-estado="Preparado" method="post" style="display:inline;">
+                                <button type="submit" class="btn btn-success btn-sm">Preparado</button>
+                            </form>
+                        }
+                    }
                 </td>
             </tr>
         }
