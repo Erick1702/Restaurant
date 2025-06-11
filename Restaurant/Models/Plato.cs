@@ -15,7 +15,6 @@ namespace Restaurant.Models
         [Required]
         public decimal Precio { get; set; }
         public bool Activo { get; set; } = true;
-
         public List<DetalleComanda> DetalleComandas { get; set; } = new List<DetalleComanda>();
     }
 }

@@ -7,6 +7,5 @@
         public int ComandaId { get; set; }
         public Comanda? Comanda { get; set; }
         public decimal Total { get; set; }
-
     }
 }

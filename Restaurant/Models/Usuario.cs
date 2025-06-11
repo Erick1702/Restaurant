@@ -23,6 +23,5 @@ namespace Restaurant.Models
         [MaxLength(250)]
         public string? Direccion { get; set; }
         public bool Activo { get; set; } = true;
-
     }
 }

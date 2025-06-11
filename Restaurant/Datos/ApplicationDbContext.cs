@@ -6,21 +6,16 @@ namespace Restaurant.Datos
 {
     public class ApplicationDbContext : IdentityDbContext<Usuario>
     {
-        public ApplicationDbContext(DbContextOptions options) : base(options)
-        {
-        }
+        public ApplicationDbContext(DbContextOptions options) : base(options) {}
+        protected ApplicationDbContext() {}
 
-        protected ApplicationDbContext()
-        {
-        }
-
+        //Asignacion de LLaveCompuesta
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
             modelBuilder.Entity<DetalleComanda>().HasKey(g => new { g.ComandaId, g.PlatoId }); // Definir la clave compuesta
         }
-
+        //Asignacion de DbSet para las entidades
         public DbSet<Estado> Estados { get; set; }
         public DbSet<Mesa> Mesas { get; set; }
         public DbSet<TipoPlato> TipoPlatos { get; set; }

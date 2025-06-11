@@ -10,9 +10,7 @@ namespace Restaurant.Controllers
     [Authorize(Roles = $"{Constantes.ROL_ADMINISTRADOR},{Constantes.ROL_COCINERO}")]
     public class TipoPlatosController : Controller
     {
-
         private readonly ApplicationDbContext _context;
-
         public TipoPlatosController(ApplicationDbContext context)
         {
             _context = context;
@@ -93,6 +91,5 @@ namespace Restaurant.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
     }
 }

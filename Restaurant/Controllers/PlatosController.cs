@@ -10,9 +10,7 @@ namespace Restaurant.Controllers
 {
     public class PlatosController: Controller
     {
-        private readonly ApplicationDbContext _context;
-        
-
+        private readonly ApplicationDbContext _context;       
         public PlatosController(ApplicationDbContext context)
         {
             _context = context;
@@ -22,19 +20,14 @@ namespace Restaurant.Controllers
         [Authorize(Roles = $"{Constantes.ROL_ADMINISTRADOR},{Constantes.ROL_COCINERO}")]
         public async Task<IActionResult> Index(int? tipoPlatoId)
         {
-            //var platos = _context.Platos.Include(p => p.TipoPlato);
-            //return View(await platos.ToListAsync());
             ViewData["TipoPlatoId"] = new SelectList(_context.TipoPlatos.Where(t => t.Activo), "Id", "Nombre");
-
             var platos = _context.Platos.Include(p => p.TipoPlato).AsQueryable();
 
             if (tipoPlatoId.HasValue)
             {
                 platos = platos.Where(p => p.TipoPlatoId == tipoPlatoId.Value);
             }
-
             return View(await platos.ToListAsync());
-
         }
 
         // GET: Platos/Create
@@ -45,6 +38,7 @@ namespace Restaurant.Controllers
         }
 
         // POST: Platos/Create
+        //Registro de platos
         [HttpPost]
         [Authorize(Roles = $"{Constantes.ROL_ADMINISTRADOR},{Constantes.ROL_COCINERO}")]
         [ValidateAntiForgeryToken]
@@ -115,6 +109,5 @@ namespace Restaurant.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
     }
 }

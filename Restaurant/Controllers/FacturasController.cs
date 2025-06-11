@@ -14,7 +14,6 @@ namespace Restaurant.Controllers
     public class FacturasController:Controller
     {
         private readonly ApplicationDbContext _context;
-
         public FacturasController(ApplicationDbContext context)
         {
             _context = context;
@@ -39,8 +38,7 @@ namespace Restaurant.Controllers
                  .ThenInclude(c => c.DetalleComandas)
                 .ThenInclude(dc => dc.Plato)
                 .FirstOrDefaultAsync(m => m.Id == id);
-                
-
+               
             if (factura == null)
                 return NotFound();
 
@@ -51,14 +49,9 @@ namespace Restaurant.Controllers
         public async Task<IActionResult> Create()
         {
             ViewBag.ComandaId = new SelectList(_context.Comandas.Include(c => c.Mesa), "Id", "Id");
-
-
             ViewBag.ComandaId = new SelectList(await _context.Comandas.ToListAsync(), "Id", "Id");
             return View();
         }
-
-        
-
 
         // POST: Facturas/Create
         [HttpPost]
@@ -68,7 +61,6 @@ namespace Restaurant.Controllers
             if (ModelState.IsValid)
             {
                 factura.Fecha = DateTime.Now;
-
                 // Obtener la comanda para calcular el total
                 var comanda = await _context.Comandas
                     .Include(c => c.DetalleComandas)
@@ -82,7 +74,7 @@ namespace Restaurant.Controllers
                 }
 
                 factura.Total = comanda.DetalleComandas.Sum(d => d.Subtotal);
-
+                //Agregar la factura
                 _context.Facturas.Add(factura);
 
                 // Buscar la Comanda relacionada
@@ -110,13 +102,10 @@ namespace Restaurant.Controllers
                         comanda.Mesa.EstadoId = estadoLibre.Id;
                     }
                 }
-
-
-
+                //Guardar Factura y update a Comanda / Mesa
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-
             ViewBag.ComandaId = new SelectList(await _context.Comandas.ToListAsync(), "Id", "Id", factura.ComandaId);
             return View(factura);
         }
@@ -159,7 +148,6 @@ namespace Restaurant.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-
             ViewBag.ComandaId = new SelectList(await _context.Comandas.ToListAsync(), "Id", "Id", factura.ComandaId);
             return View(factura);
         }
@@ -194,12 +182,13 @@ namespace Restaurant.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        //Valida que factura existe
         private bool FacturaExists(int id)
         {
             return _context.Facturas.Any(e => e.Id == id);
         }
 
-
+        //Datos de comandaDetalle para la facturas
         [HttpGet]
         public async Task<IActionResult> ObtenerDetallesComanda(int comandaId)
         {
@@ -212,10 +201,10 @@ namespace Restaurant.Controllers
                     Subtotal = d.Subtotal
                 })
                 .ToListAsync();
-
             return Json(detalles);
         }
 
+        //Descargar pdf factura
         public async Task<IActionResult> DescargarPdf(int id)
         {
             var factura = await _context.Facturas
@@ -228,7 +217,7 @@ namespace Restaurant.Controllers
             {
                 return NotFound();
             }
-
+            //Generacion de pdf
             return new ViewAsPdf("FacturaPdf", factura)
             {
                 FileName = $"Factura_{factura.Id}.pdf",
@@ -236,7 +225,5 @@ namespace Restaurant.Controllers
                 PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait
             };
         }
-
-
     }
 }

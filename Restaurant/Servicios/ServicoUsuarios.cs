@@ -23,7 +23,6 @@ namespace Restaurant.Servicios
 
         public string? ObtenerUsuarioId()
         {
-
             var idClaim = httpContext.User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault();
             if (idClaim is null)
             {
@@ -33,7 +32,6 @@ namespace Restaurant.Servicios
             {
                 return idClaim.Value;
             }
-
         }
     }
 }

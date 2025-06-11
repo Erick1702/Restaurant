@@ -7,11 +7,11 @@ using Restaurant.Servicios;
 
 namespace Restaurant.Controllers
 {
+    //Asignacion de rol global
     [Authorize(Roles = $"{Constantes.ROL_ADMINISTRADOR},{Constantes.ROL_MESERO}")]
     public class TipoConsumosController:Controller
     {
         private readonly ApplicationDbContext _context;
-
         public TipoConsumosController(ApplicationDbContext context)
         {
             _context = context;
@@ -90,8 +90,7 @@ namespace Restaurant.Controllers
             if (id == null)
                 return NotFound();
 
-            var tipoConsumo = await _context.TipoConsumos
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var tipoConsumo = await _context.TipoConsumos.FirstOrDefaultAsync(m => m.Id == id);
 
             if (tipoConsumo == null)
                 return NotFound();
@@ -117,6 +116,5 @@ namespace Restaurant.Controllers
         {
             return _context.TipoConsumos.Any(e => e.Id == id);
         }
-
     }
 }

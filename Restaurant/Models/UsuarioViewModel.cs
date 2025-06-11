@@ -1,5 +1,6 @@
 ﻿namespace Restaurant.Models
 {
+    //ViewModel para el registro
     public class UsuarioViewModel
     {
         public string Id { get; set; }
@@ -10,6 +11,5 @@
         public string? Sexo { get; set; }
         public string? Direccion { get; set; }
         public string? Email { get; set; }
-
     }
 }

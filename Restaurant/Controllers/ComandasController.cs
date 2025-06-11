@@ -10,10 +10,8 @@ using Rotativa.AspNetCore;
 
 namespace Restaurant.Controllers
 {
-    
     public class ComandasController: Controller
     {
-
         private readonly ApplicationDbContext _context;
         private readonly UserManager<Usuario> _userManager;
         private ApplicationDbContext context;
@@ -23,8 +21,6 @@ namespace Restaurant.Controllers
             _context = context;
             _userManager = userManager;
         }
-
-
 
         // GET: Comandas
         [Authorize(Roles = $"{Constantes.ROL_ADMINISTRADOR},{Constantes.ROL_MESERO}, {Constantes.ROL_COCINERO}")]
@@ -39,6 +35,7 @@ namespace Restaurant.Controllers
             return View(await comandas.ToListAsync());
         }
         [Authorize(Roles = $"{Constantes.ROL_ADMINISTRADOR},{Constantes.ROL_MESERO}")]
+
         // GET: Comanda/Create
         public async Task<IActionResult> Create()
         {
@@ -54,80 +51,168 @@ namespace Restaurant.Controllers
         }
 
         // POST: Comanda/Create
+
+        //public async Task<IActionResult> Create(ComandaCreateViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var estadoEmitido = await _context.Estados
+        //                                   .FirstOrDefaultAsync(e => e.Nombre == "Emision" && e.Tipo == "Comanda");
+
+        //        var comanda = new Comanda
+        //        {
+        //            Fecha = DateTime.Now,
+        //            MesaId = model.MesaId,
+        //            TipoConsumoId = model.TipoConsumoId,
+        //            UsuarioId = _userManager.GetUserId(User),
+        //            EstadoId = estadoEmitido.Id
+        //        };
+        //        //Actualizar el estado de la mesa a "Ocupada"
+        //        var mesa = await _context.Mesas.FindAsync(model.MesaId);
+        //        if (mesa != null)
+        //        {
+        //            var estadoOcupado = await _context.Estados
+        //                                               .FirstOrDefaultAsync(e => e.Nombre == "Ocupado" && e.Tipo == "Mesa");
+
+        //            if (estadoOcupado != null)
+        //            {
+        //                // Cambiar el estado de la mesa a "Ocupado"
+        //                mesa.EstadoId = estadoOcupado.Id;
+        //                _context.Mesas.Update(mesa);
+        //            }
+        //            else
+        //            {
+        //                //Mensaje si el Estado no existe
+        //                ModelState.AddModelError("", "El estado 'Ocupado' no está configurado.");
+        //                return View(model);
+        //            }
+        //        }
+
+        //        foreach (var detalle in model.Detalles)
+        //        {
+        //            if (detalle.PlatoId.HasValue && detalle.Cantidad > 0)
+        //            {
+        //                var plato = await _context.Platos.FindAsync(detalle.PlatoId);
+        //                if (plato != null)
+        //                {
+        //                    comanda.DetalleComandas.Add(new DetalleComanda
+        //                    {
+        //                        PlatoId = detalle.PlatoId,
+        //                        Cantidad = detalle.Cantidad,
+        //                        Subtotal = plato.Precio * detalle.Cantidad
+        //                    });
+        //                }
+        //            }
+        //        }
+
+        //        _context.Comandas.Add(comanda);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+
+        //    ViewBag.MesaId = new SelectList(await _context.Mesas.ToListAsync(), "Id", "Numero", model.MesaId);
+        //    ViewBag.TipoConsumoId = new SelectList(await _context.TipoConsumos.ToListAsync(), "Id", "Nombre", model.TipoConsumoId);
+        //    ViewBag.Platos = new SelectList(await _context.Platos.Where(p => p.Activo).ToListAsync(), "Id", "Nombre");
+
+        //    return View(model);
+        //}
+
         [HttpPost]
         [Authorize(Roles = $"{Constantes.ROL_ADMINISTRADOR},{Constantes.ROL_MESERO}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ComandaCreateViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var estadoEmitido = await _context.Estados
-                                           .FirstOrDefaultAsync(e => e.Nombre == "Emision" && e.Tipo == "Comanda");
-
-                //if (estadoEmitido == null)
-                //{
-                //    //Error por si no existe el estado "Emitido" de tipo "Comanda"
-                //    ModelState.AddModelError("", "El estado 'Emitido' no está configurado.");
-                //    return View(model); // O cualquier acción que quieras tomar
-                //}
-
-                var comanda = new Comanda
-                {
-                    Fecha = DateTime.Now,
-                    MesaId = model.MesaId,
-                    TipoConsumoId = model.TipoConsumoId,
-                    UsuarioId = _userManager.GetUserId(User),
-                    EstadoId = estadoEmitido.Id
-                };
-                //Actualizar el estado de la mesa a "Ocupada"
-                var mesa = await _context.Mesas.FindAsync(model.MesaId);
-                if (mesa != null)
-                {
-                    var estadoOcupado = await _context.Estados
-                                                       .FirstOrDefaultAsync(e => e.Nombre == "Ocupado" && e.Tipo=="Mesa");
-
-                    if (estadoOcupado != null)
-                    {
-                        mesa.EstadoId = estadoOcupado.Id; // Cambiar el estado de la mesa a "Ocupado"
-                        _context.Mesas.Update(mesa);
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "El estado 'Ocupado' no está configurado.");
-                        return View(model);
-                    }
-                }
-
-                /////
-
-                foreach (var detalle in model.Detalles)
-                {
-                    if (detalle.PlatoId.HasValue && detalle.Cantidad > 0)
-                    {
-                        var plato = await _context.Platos.FindAsync(detalle.PlatoId);
-                        if (plato != null)
-                        {
-                            comanda.DetalleComandas.Add(new DetalleComanda
-                            {
-                                PlatoId = detalle.PlatoId,
-                                Cantidad = detalle.Cantidad,
-                                Subtotal = plato.Precio * detalle.Cantidad
-                            });
-                        }
-                    }
-                }
-
-                _context.Comandas.Add(comanda);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                await CargarCombos(model);
+                return View(model);
             }
 
+            var estadoComanda = await ObtenerEstado("Emision", "Comanda");
+            if (estadoComanda == null)
+            {
+                ModelState.AddModelError("", "El estado 'Emisión' no está configurado.");
+                await CargarCombos(model);
+                return View(model);
+            }
+
+            var comanda = await CrearComandaDesdeModelo(model, estadoComanda.Id);
+
+            var estadoOcupado = await ObtenerEstado("Ocupado", "Mesa");
+            if (!await ActualizarEstadoMesa(model.MesaId, estadoOcupado?.Id))
+            {
+                ModelState.AddModelError("", "El estado 'Ocupado' no está configurado.");
+                await CargarCombos(model);
+                return View(model);
+            }
+
+            _context.Comandas.Add(comanda);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        private async Task<Estado> ObtenerEstado(string nombre, string tipo)
+        {
+            return await _context.Estados
+                .FirstOrDefaultAsync(e => e.Nombre == nombre && e.Tipo == tipo);
+        }
+
+        private async Task<Comanda> CrearComandaDesdeModelo(ComandaCreateViewModel model, int estadoId)
+        {
+            var comanda = new Comanda
+            {
+                Fecha = DateTime.Now,
+                MesaId = model.MesaId,
+                TipoConsumoId = model.TipoConsumoId,
+                UsuarioId = _userManager.GetUserId(User),
+                EstadoId = estadoId,
+                DetalleComandas = new List<DetalleComanda>()
+            };
+
+            foreach (var detalle in model.Detalles)
+            {
+                if (detalle.PlatoId.HasValue && detalle.Cantidad > 0)
+                {
+                    var plato = await _context.Platos.FindAsync(detalle.PlatoId);
+                    if (plato != null)
+                    {
+                        comanda.DetalleComandas.Add(new DetalleComanda
+                        {
+                            PlatoId = detalle.PlatoId.Value,
+                            Cantidad = detalle.Cantidad,
+                            Subtotal = plato.Precio * detalle.Cantidad
+                        });
+                    }
+                }
+            }
+
+            return comanda;
+        }
+
+        private async Task<bool> ActualizarEstadoMesa(int? mesaId, int? nuevoEstadoId)
+        {
+            if (!nuevoEstadoId.HasValue)
+                return false;
+
+            var mesa = await _context.Mesas.FindAsync(mesaId);
+            if (mesa == null)
+                return false;
+
+            mesa.EstadoId = nuevoEstadoId.Value;
+            _context.Mesas.Update(mesa);
+            return true;
+        }
+
+        private async Task CargarCombos(ComandaCreateViewModel model)
+        {
             ViewBag.MesaId = new SelectList(await _context.Mesas.ToListAsync(), "Id", "Numero", model.MesaId);
             ViewBag.TipoConsumoId = new SelectList(await _context.TipoConsumos.ToListAsync(), "Id", "Nombre", model.TipoConsumoId);
             ViewBag.Platos = new SelectList(await _context.Platos.Where(p => p.Activo).ToListAsync(), "Id", "Nombre");
-
-            return View(model);
         }
+
+
+
         //Get : Comanda/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
@@ -142,7 +227,7 @@ namespace Restaurant.Controllers
             {
                 return NotFound();
             }
-
+            //Edicion de campos
             var viewModel = new ComandaEditViewModel
             {
                 Id = comanda.Id,
@@ -249,19 +334,13 @@ namespace Restaurant.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
-
+        //Valida si existe id comanda
         private bool ComandaExists(int id)
         {
             return _context.Comandas.Any(e => e.Id == id);
         }
 
-
-      
-
-        
-
-       
-
+        //Detalle de Comanda
         [Authorize(Roles = $"{Constantes.ROL_ADMINISTRADOR},{Constantes.ROL_MESERO},{Constantes.ROL_COCINERO}")]
         public async Task<IActionResult> Details(int id)
         {
@@ -277,7 +356,7 @@ namespace Restaurant.Controllers
             {
                 return NotFound();
             }
-
+            //añadir detalle de comonadaDetalle
             var detalles = comanda.DetalleComandas.Select(dc => new DetalleItemViewModel
             {
                 Plato = dc.Plato?.Nombre ?? "",
@@ -285,17 +364,7 @@ namespace Restaurant.Controllers
                 Cantidad = dc.Cantidad,
                 Subtotal = (dc.Plato?.Precio ?? 0) * dc.Cantidad
             }).ToList();
-
-            //var viewModel = new ComandaDetalleViewModel
-            //{
-            //    ComandaId = comanda.Id,
-            //    Fecha = comanda.Fecha,
-            //    Mesa = comanda.Mesa?.Numero,
-            //    Usuario = comanda.Usuario?.UserName,
-            //    TipoConsumo = comanda.TipoConsumo?.Nombre,
-            //    Detalles = detalles,
-            //    Total = detalles.Sum(d => d.Subtotal)
-            //};
+            //Añadir comanda
             var viewModel = new ComandaDetalleViewModel
             {
                 ComandaId = comanda.Id,
@@ -307,10 +376,10 @@ namespace Restaurant.Controllers
                 // Total no se asigna directamente
             };
 
-
             return View(viewModel);
         }
-
+        
+        //Generacion de PDF de Comanda
         [Authorize(Roles = $"{Constantes.ROL_ADMINISTRADOR},{Constantes.ROL_MESERO}")]
         public IActionResult GeneratePdf(int id)
         {
@@ -324,7 +393,7 @@ namespace Restaurant.Controllers
             {
                 return NotFound();
             }
-
+            //Datos de comanda y comandaDetalle
             var viewModel = new ComandaDetalleViewModel
             {
                 ComandaId = comanda.Id,
@@ -345,11 +414,10 @@ namespace Restaurant.Controllers
             };
         }
 
-
+        //Cambia el Estado de los Objetos
         [HttpPost]
         [Authorize(Roles = $"{Constantes.ROL_ADMINISTRADOR},{Constantes.ROL_COCINERO}")]
         [ValidateAntiForgeryToken]
-        
         public async Task<IActionResult> CambiarEstado(int id, string estado)
         {
             var comanda = await _context.Comandas.FindAsync(id);
@@ -365,7 +433,6 @@ namespace Restaurant.Controllers
             {
                 return BadRequest("Estado no válido.");
             }
-
             comanda.EstadoId = nuevoEstado.Id;
             await _context.SaveChangesAsync();
 

@@ -17,7 +17,6 @@ builder.Services.AddControllersWithViews();
 builder.Services.Configure<GoogleReCaptchaConfig>(
     builder.Configuration.GetSection("GoogleReCaptcha"));
 
-
 builder.Services.AddTransient<IServicoUsuarios, ServicoUsuarios>();
 //Tutorial
 builder.Services.AddDbContextFactory<ApplicationDbContext>(opciones=>
@@ -25,16 +24,19 @@ opciones.UseSqlServer("name=DefaultConnection")
 .UseSeeding(Seeding.Aplicar)
 .UseAsyncSeeding(Seeding.AplicarAsync));
 
+//Configuracion Identity
 builder.Services.AddIdentity<Usuario, IdentityRole>(opciones =>
 {
+    //No requiere confirmacion de cuenta
+    //Ejm: Si crea con su gmail no quiere codigo de confirmacion
     opciones.SignIn.RequireConfirmedAccount = false;
-
+    //Tiempo de duracion para el bloquero 1 minuto
     opciones.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
+    //Asignacion de numero de fallos en el login
     opciones.Lockout.MaxFailedAccessAttempts = 3;
     opciones.Lockout.AllowedForNewUsers = true;
 
 }).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
-
 
 
 //builder.Services.PostConfigure<CookieAuthenticationOptions>(IdentityConstants.ApplicationScheme, opciones =>
@@ -42,15 +44,13 @@ builder.Services.AddIdentity<Usuario, IdentityRole>(opciones =>
 //    opciones.LogoutPath = "/usuarios/login";
 //    opciones.AccessDeniedPath = "/usuarios/login";
 //});
-
+//Configuracion para los accesos
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Usuarios/Login";
     options.AccessDeniedPath = "/Usuarios/AccesoDenegado";
 });
 
-
-////
 ///RotativaConfiguration.Setup(app.Environment.WebRootPath, "Rotativa");
 var app = builder.Build();
 
@@ -80,6 +80,6 @@ app.MapControllerRoute(
 //pdf
 IWebHostEnvironment env = app.Environment;
 Rotativa.AspNetCore.RotativaConfiguration.Setup(env.WebRootPath, "Rotativa");
-//
+
 
 app.Run();

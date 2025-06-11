@@ -9,9 +9,7 @@ namespace Restaurant.Controllers
 {
     public class EstadosController: Controller
     {
-
         private readonly ApplicationDbContext _context;
-
         public EstadosController(ApplicationDbContext context)
         {
             _context = context;

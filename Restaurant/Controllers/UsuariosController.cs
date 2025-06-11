@@ -33,7 +33,7 @@ namespace Restaurant.Controllers
             return View();
         }
 
-
+        //Para creacion de nuevo usuarios
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Registro(RegistroViewModel modelo)
@@ -70,6 +70,7 @@ namespace Restaurant.Controllers
             }
         }
 
+        //Incio de sesion
         [AllowAnonymous]
         public IActionResult Login(string? mensaje = null)
         {
@@ -81,12 +82,15 @@ namespace Restaurant.Controllers
             return View();
         }
 
+        //Para la vista de acceso denegado
         [AllowAnonymous]
         public IActionResult AccesoDenegado()
         {
             return View();
         }
 
+        //Inicio de sesion
+        //Valida datos de user y password y recpcta
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Login(LoginViewModel modelo)
@@ -126,9 +130,8 @@ namespace Restaurant.Controllers
             
         }
 
-
+        //Cierre de sesion
         [HttpPost]
-
         [AllowAnonymous]
         public async Task<IActionResult> Logout()
         {
@@ -136,6 +139,7 @@ namespace Restaurant.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        //Listado de usuarios
         [HttpGet]
         [Authorize(Roles=Constantes.ROL_ADMINISTRADOR)]
         public async Task<IActionResult>Listado(string? mensaje=null)
@@ -159,7 +163,7 @@ namespace Restaurant.Controllers
             return View(modelo);
         }
 
-
+        //Muestra roles de usuarios
         [HttpGet]
         [Authorize(Roles=Constantes.ROL_ADMINISTRADOR)]
         public async Task<IActionResult> RolesUsuario(string usuarioId)
@@ -170,10 +174,11 @@ namespace Restaurant.Controllers
             {
                 return RedirectToAction("NoEncontrado","Home");
             }
-
+            //Roles del usuario
             var rolesQueElUsuarioTiene = await userManager.GetRolesAsync(usuario);
+            //Roles existentes
             var rolesExistentes = await context.Roles.ToListAsync();
-
+           
             var rolesDelUsuario = rolesExistentes.Select(x => new UsuarioRolViewModel
             {
                 Nombre = x.Name!,
@@ -190,6 +195,7 @@ namespace Restaurant.Controllers
             return View(modelo);
         }
 
+        //Asignar nuevos roles
         [HttpPost]
         [Authorize(Roles=Constantes.ROL_ADMINISTRADOR)]
         public async Task<IActionResult>EditarRoles (EditarRolesViewModel modelo)
@@ -209,6 +215,7 @@ namespace Restaurant.Controllers
             return RedirectToAction("Listado", new { mensaje });
         }
 
+        //valida recapcta
         private async Task<bool> EsReCaptchaValido(string token)
         {
             var secret = config.GetValue<string>("GoogleReCaptcha:SecretKey");
@@ -220,7 +227,5 @@ namespace Restaurant.Controllers
             var json = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<JsonElement>(json).GetProperty("success").GetBoolean();
         }
-
-
     }
 }

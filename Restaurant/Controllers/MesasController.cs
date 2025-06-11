@@ -11,7 +11,6 @@ namespace Restaurant.Controllers
     public class MesasController: Controller
     {
         private readonly ApplicationDbContext _context;
-
         public MesasController(ApplicationDbContext context)
         {
             _context = context;
@@ -43,8 +42,7 @@ namespace Restaurant.Controllers
         {
             if (ModelState.IsValid)
             {
-                var estadoLibre = await _context.Estados
-                                        .FirstOrDefaultAsync(e => e.Nombre == "Libre");
+                var estadoLibre = await _context.Estados.FirstOrDefaultAsync(e => e.Nombre == "Libre");
 
                 var mesa = new Mesa
                 {
@@ -100,9 +98,7 @@ namespace Restaurant.Controllers
         {
             if (id == null) return NotFound();
 
-            var mesa = await _context.Mesas
-                .Include(m => m.Estado)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var mesa = await _context.Mesas.Include(m => m.Estado).FirstOrDefaultAsync(m => m.Id == id);
 
             if (mesa == null) return NotFound();
 

@@ -6,6 +6,7 @@ namespace Restaurant.Utilidades
 {
     public static class Seeding
     {
+        //Roles predifinidos
         private static List<string> roles = new List<string>
         {
             Constantes.ROL_ADMINISTRADOR,
@@ -19,7 +20,6 @@ namespace Restaurant.Utilidades
             foreach(var rol in roles)
             {
                 var rolDB = context.Set<IdentityRole>().FirstOrDefault(r => r.Name == rol);
-
                 if (rolDB is null)
                 {
                     context.Set<IdentityRole>().Add(new IdentityRole
