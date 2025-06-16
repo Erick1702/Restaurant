@@ -2,7 +2,7 @@
 
 <h2>Estados</h2>
 
-<a asp-action="Create" class="btn btn-primary">
+<a asp-action="Create" class="btn btn-primary" data-voice="Crear estado">
     <svg width="24" height="24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <use xlink:href="#icon-pencil" />
     </svg>Crear Nuevo Estado
@@ -25,12 +25,12 @@
                 <td>@item.Tipo</td>
                 <td>@(item.Activo ? "Sí" : "No")</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning" data-voice="Editar Estado @item.Nombre">
                         <svg width="24" height="24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <use xlink:href="#icon-edit" />
                         </svg>Editar
                     </a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger" data-voice="Eliminar Estado @item.Nombre">
                         <svg width="24" height="24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <use xlink:href="#icon-pencil-x" />
                         </svg>Eliminar

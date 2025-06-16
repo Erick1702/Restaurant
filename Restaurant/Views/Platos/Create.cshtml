@@ -5,38 +5,41 @@
 <form asp-action="@ViewContext.RouteData.Values["action"]">
     <div class="form-group">
         <label asp-for="Nombre"></label>
-        <input asp-for="Nombre" class="form-control" />
+        <input asp-for="Nombre" class="form-control" id="Nombre" name="Nombre" data-voice="Nombre del Plato"/>
         <span asp-validation-for="Nombre" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label asp-for="TipoPlatoId">Tipo de Plato</label>
-        <select asp-for="TipoPlatoId" asp-items="ViewBag.TipoPlatoId" class="form-control"></select>
+        <select asp-for="TipoPlatoId" asp-items="ViewBag.TipoPlatoId" class="form-control" id="TipoPladoId" name="TipoPlatoId" data-voice="Tipo plato"></select>
         <span asp-validation-for="TipoPlatoId" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label asp-for="Descripcion"></label>
-        <input asp-for="Descripcion" class="form-control" />
+        <input asp-for="Descripcion" class="form-control" id="Descripcion" name="Descripcion" data-voice="Descripcion del plato"/>
         <span asp-validation-for="Descripcion" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label asp-for="Precio"></label>
-        <input asp-for="Precio" class="form-control" />
+        <input asp-for="Precio" class="form-control" data-voice="Precio" />
         <span asp-validation-for="Precio" class="text-danger"></span>
     </div>
 
     <div class="form-group form-check">
-        <input asp-for="Activo" class="form-check-input" />
+        <input asp-for="Activo" class="form-check-input" checked="checked"/>
         <label asp-for="Activo" class="form-check-label"></label>
     </div>
 
-    <button type="submit" class="btn btn-success">Guardar</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    <button type="submit" class="btn btn-success" data-voice="Guardar Plato">Guardar</button>
+    <a asp-action="Index" class="btn btn-secondary" data-voice="Cancelar">Cancelar</a>
 </form>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <partial name="_TextoVoz" />
+
 }
 

@@ -7,7 +7,7 @@
 <h1>Facturas</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-primary">
+    <a asp-action="Create" class="btn btn-primary" data-voice="Crear factura">
         <svg width="24" height="24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <use xlink:href="#icon-pencil" />
         </svg>Crear Nueva Factura
@@ -38,12 +38,12 @@
                             <use xlink:href="#icon-list-details" />
                         </svg>Detalles
                     </a>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm" data-voice="Editar factura @item.Id">
                         <svg width="24" height="24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <use xlink:href="#icon-edit" />
                         </svg>Editar
                     </a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm" data-voice="Eliminar factura @item.Id">
                         <svg width="24" height="24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <use xlink:href="#icon-pencil-x" />
                         </svg>Eliminar

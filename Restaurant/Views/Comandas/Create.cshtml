@@ -10,14 +10,14 @@
 <form asp-action="Create" method="post">
     <div class="form-group">
         <label>Mesa</label>
-        <select asp-for="MesaId" class="form-control" asp-items="ViewBag.MesaId">
+        <select asp-for="MesaId" class="form-control" asp-items="ViewBag.MesaId" data-voice="Selecionar mesa">
             <option value="">-- Seleccionar Mesa --</option>
         </select>
     </div>
 
     <div class="form-group">
         <label>Tipo Consumo</label>
-        <select asp-for="TipoConsumoId" class="form-control" asp-items="ViewBag.TipoConsumoId">
+        <select asp-for="TipoConsumoId" class="form-control" asp-items="ViewBag.TipoConsumoId" data-voice="Selecionar tipo de consumo">
             <option value="">-- Seleccionar Tipo Consumo --</option>
         </select>
     </div>
@@ -29,12 +29,12 @@
         <!-- Aquí se agregarán dinámicamente los platos -->
     </div>
 
-    <button type="button" class="btn btn-primary" onclick="agregarDetalle()">Agregar Plato</button>
+    <button type="button" class="btn btn-primary" onclick="agregarDetalle()" data-voice="Agregar plato" >Agregar Plato</button>
 
     <hr />
 
-    <button type="submit" class="btn btn-success">Guardar Comanda</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    <button type="submit" class="btn btn-success" data-voice="Guardar comanda">Guardar Comanda</button>
+    <a asp-action="Index" class="btn btn-secondary" data-voice="Cancelar">Cancelar</a>
 </form>
 
 @section Scripts {
@@ -55,8 +55,8 @@
                 <div class="detalle-item mb-3">
                     <div class="row">
                         <div class="col-md-4">
-                            <select name="Detalles[${index}].PlatoId" class="form-control" onchange="actualizarPrecio(this)">
-                                <option value="">-- Seleccionar Plato --</option>
+                            <select name="Detalles[${index}].PlatoId" class="form-control" data-voice="Selecionar plato" onchange="actualizarPrecio(this)" >
+                                <option value=""  >-- Seleccionar Plato --</option>
         @foreach (var plato in platos)
         {
                                         <option value="@plato.Value">@plato.Text.Split('|')[0]</option>
@@ -73,7 +73,7 @@
                             <input type="text" class="form-control subtotal" placeholder="Subtotal" readonly />
                         </div>
                         <div class="col-md-2">
-                            <button type="button" class="btn btn-danger" onclick="eliminarDetalle(this)">Eliminar</button>
+                            <button type="button" class="btn btn-danger" data-voice="Cancelar" onclick="eliminarDetalle(this)">Eliminar</button>
                         </div>
                     </div>
                 </div>

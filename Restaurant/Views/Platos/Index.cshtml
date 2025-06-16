@@ -4,15 +4,15 @@
 
 <form method="get" asp-action="Index" class="form-inline mb-3">
     <div class="form-group">
-        <select name="tipoPlatoId" class="form-control mr-2" asp-items="ViewBag.TipoPlatoId">
+        <select name="tipoPlatoId" class="form-control mr-2" asp-items="ViewBag.TipoPlatoId" data-voice="Filtro tipo de plato">
             <option value="">-- Todos los Tipos --</option>
         </select>
     </div>
-    <button type="submit" class="btn btn-primary">Filtrar</button>
-    <a asp-action="Index" class="btn btn-secondary ml-2">Limpiar</a>
+    <button type="submit" class="btn btn-primary" data-voice="Filtrar">Filtrar</button>
+    <a asp-action="Index" class="btn btn-secondary ml-2" data-voice="Limpiar">Limpiar</a>
 </form>
 
-<a asp-action="Create" class="btn btn-primary mb-3">
+<a asp-action="Create" class="btn btn-primary mb-3" data-voice="Crear plato">
     <svg width="24" height="24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <use xlink:href="#icon-pencil" />
     </svg>Crear Nuevo Plato
@@ -37,12 +37,12 @@
                 <td>@item.Precio.ToString("C")</td>
                 <td>@(item.Activo ? "Sí" : "No")</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm" data-voice="Editar @item.Nombre">
                         <svg width="24" height="24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <use xlink:href="#icon-edit" />
                         </svg>Editar
                     </a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm" data-voice="Eliminar @item.Nombre">
                         <svg width="24" height="24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <use xlink:href="#icon-pencil-x" />
                         </svg>Eliminar

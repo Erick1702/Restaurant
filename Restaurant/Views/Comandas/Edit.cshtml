@@ -12,14 +12,14 @@
 
     <div class="form-group">
         <label>Mesa</label>
-        <select asp-for="MesaId" class="form-control" asp-items="ViewBag.MesaId">
+        <select asp-for="MesaId" class="form-control" asp-items="ViewBag.MesaId" data-voice="Seleccionar mesa">
             <option value="">-- Seleccionar Mesa --</option>
         </select>
     </div>
 
     <div class="form-group">
         <label>Tipo Consumo</label>
-        <select asp-for="TipoConsumoId" class="form-control" asp-items="ViewBag.TipoConsumoId">
+        <select asp-for="TipoConsumoId" class="form-control" asp-items="ViewBag.TipoConsumoId" data-voice="Seleccionar tipo de consumo">
             <option value="">-- Seleccionar Tipo Consumo --</option>
         </select>
     </div>
@@ -33,7 +33,7 @@
             <div class="detalle-item mb-3">
                 <div class="row">
                     <div class="col-md-4">
-                        <select name="Detalles[@i].PlatoId" class="form-control" onchange="actualizarPrecio(this)">
+                        <select name="Detalles[@i].PlatoId" class="form-control" onchange="actualizarPrecio(this)" data-voice="Seleccionar plato" >
                             <option value="">-- Seleccionar Plato --</option>
                             @foreach (var plato in ViewBag.Platos as SelectList)
                             {
@@ -58,18 +58,18 @@
                         <input type="text" class="form-control subtotal" placeholder="Subtotal" value="@(Model.Detalles[i].Precio * Model.Detalles[i].Cantidad)" readonly />
                     </div>
                     <div class="col-md-2">
-                        <button type="button" class="btn btn-danger" onclick="eliminarDetalle(this)">Eliminar</button>
+                        <button type="button" class="btn btn-danger" onclick="eliminarDetalle(this)" data-voice="Eliminar plato">Eliminar</button>
                     </div>
                 </div>
             </div>
         }
     </div>
 
-    <button type="button" class="btn btn-primary" onclick="agregarDetalle()">Agregar Plato</button>
+    <button type="button" class="btn btn-primary" onclick="agregarDetalle()" data-voice="Agregar plato">Agregar Plato</button>
 
     <hr />
-    <button type="submit" class="btn btn-success">Guardar Cambios</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    <button type="submit" class="btn btn-success" data-voice="Guardar cambios">Guardar Cambios</button>
+    <a asp-action="Index" class="btn btn-secondary" data-voice="Cancelar">Cancelar</a>
 </form>
 
 @section Scripts {

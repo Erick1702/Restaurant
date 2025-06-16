@@ -1,0 +1,28 @@
+﻿<script>
+    let narradorActivo = false;
+
+    function hablar(texto) {
+        if (!narradorActivo || !('speechSynthesis' in window)) return;
+
+        const utterance = new SpeechSynthesisUtterance(texto);
+        utterance.lang = 'es-PE';
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(utterance);
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // Evento para cambiar estado del narrador
+        const btn = document.getElementById("toggleNarrador");
+        btn.addEventListener("click", function () {
+            narradorActivo = !narradorActivo;
+            btn.innerText = narradorActivo ? "🚫 Desactivar Narrador" : "🔊 Activar Narrador";
+        });
+
+        // Agregar eventos a campos con data-voice
+        const campos = document.querySelectorAll("[data-voice]");
+        campos.forEach(campo => {
+            campo.addEventListener("focus", () => hablar(campo.dataset.voice));
+            campo.addEventListener("mouseenter", () => hablar(campo.dataset.voice));
+        });
+    });
+</script>

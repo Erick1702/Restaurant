@@ -2,7 +2,7 @@
 
 <h2>Tipos de Platos</h2>
 
-<a asp-action="Create" class="btn btn-primary mb-3">
+<a asp-action="Create" class="btn btn-primary mb-3" data-voice="Crear tipo de plato">
     <svg width="24" height="24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <use xlink:href="#icon-pencil" />
     </svg>Crear Nuevo Tipo
@@ -25,12 +25,12 @@
                 <td>@item.Descripcion</td>
                 <td>@(item.Activo ? "Sí" : "No")</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm" data-voice="Editar tipo @item.Nombre">
                         <svg width="24" height="24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <use xlink:href="#icon-edit" />
                         </svg>Editar
                     </a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm" data-voice="Eliminar tipo @item.Nombre">
                         <svg width="24" height="24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <use xlink:href="#icon-pencil-x" />
                         </svg>Eliminar

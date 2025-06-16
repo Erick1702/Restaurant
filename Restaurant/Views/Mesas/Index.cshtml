@@ -2,7 +2,7 @@
 
 <h2>Mesas</h2>
 
-<a asp-action="Create" class="btn btn-primary">
+<a asp-action="Create" class="btn btn-primary" data-voice="Crear mesa">
     
     <svg width="24" height="24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <use xlink:href="#icon-pencil" />
@@ -30,12 +30,12 @@
                 <td>@item.Estado?.Nombre</td>
                 <td>@(item.Activo ? "Sí" : "No")</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning" data-voice="Editar mesa @item.Numero">
                         <svg width="24" height="24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <use xlink:href="#icon-edit" />
                         </svg>
                         Editar</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger" data-voice="Eliminar mesa @item.Numero">
                         <svg width="24" height="24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <use xlink:href="#icon-pencil-x" />
                         </svg>

@@ -7,7 +7,7 @@
 <h2>@ViewBag.Title</h2>
 
 <p>
-    <a asp-action="Create" class="btn btn-primary">Crear nuevo</a>
+    <a asp-action="Create" class="btn btn-primary" data-voice="Crear Tipo de consumo">Crear nuevo</a>
 </p>
 
 <table class="table table-bordered">
@@ -27,8 +27,8 @@
                 <td>@item.Descripcion</td>
                 <td>@(item.Activo ? "Sí" : "No")</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Editar</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Eliminar</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning" data-voice="Editar Conusmo @item.Nombre">Editar</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger" data-voice="Eliminar consumo @item.Nombre">Eliminar</a>
                 </td>
             </tr>
         }

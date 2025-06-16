@@ -24,14 +24,14 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="mb-3">
                 <label asp-for="Email" class="form-label"></label>
-                <input asp-for="Email" class="text-dager" />
+                <input asp-for="Email" class="text-dager" data-voice="Correo electronico"/>
                 <span asp-validation-for="Email" class="text-danger" ></span>
             
             </div>
 
             <div class="mb-3">
                 <label asp-for="Password" class="form-label"></label>
-                <input asp-for="Password" type="password" class="text-dager" />
+                <input asp-for="Password" type="password" class="text-dager" data-voice="contraseña"/>
                 <span asp-validation-for="Password" class="text-danger"></span>
 
             </div>
@@ -43,7 +43,7 @@
             <div class="g-recaptcha" data-sitekey="@configuration["GoogleReCaptcha:SiteKey"]"></div>
             
 
-           <button class="btn-primary btn" >Login</button>
+           <button class="btn-primary btn" >Iniciar Sesion</button>
            <a class="btn btn-success" asp-action="registro" >Crear una nueva cuenta</a>
 
             

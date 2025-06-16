@@ -45,9 +45,9 @@
 					<td>@usuario.Direccion</td>
 					<td>@usuario.Email</td>
 					<td>
-						<a asp-action="Editar" asp-route-id="@usuario.Id" class="btn btn-primary">Editar</a>
-						<a asp-action="Eliminar" asp-route-id="@usuario.Id" class="btn btn-danger">Eliminar</a>
-						<a asp-action="RolesUsuario" asp-route-usuarioId="@usuario.Id" class="btn btn-primary">Editar Roles</a>
+						<a asp-action="Editar" asp-route-id="@usuario.Id" class="btn btn-primary" data-voice="Editar @usuario.Nombre">Editar</a>
+						<a asp-action="Eliminar" asp-route-id="@usuario.Id" class="btn btn-danger" data-voice="Eliminar @usuario.Nombre">Eliminar</a>
+						<a asp-action="RolesUsuario" asp-route-usuarioId="@usuario.Id" class="btn btn-primary" data-voice="Editar roles">Editar Roles</a>
 					</td>
 				</tr>
 			}

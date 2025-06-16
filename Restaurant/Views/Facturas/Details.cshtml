@@ -46,10 +46,10 @@
 </table>
 
 <div class="mt-3">
-    <a asp-action="DescargarPdf" asp-route-id="@Model.Id" class="btn btn-danger">
+    <a asp-action="DescargarPdf" asp-route-id="@Model.Id" class="btn btn-danger" data-voice="Generar pdf">
         Descargar Factura PDF
     </a>
 
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Editar</a>
-    <a asp-action="Index" class="btn btn-secondary">Volver a la lista</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning" data-voice="Editar factura @Model.Id">Editar</a>
+    <a asp-action="Index" class="btn btn-secondary" data-voice="Volver">Volver a la lista</a>
 </div>

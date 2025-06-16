@@ -9,7 +9,7 @@
 <form asp-action="Create">
     <div class="form-group">
         <label asp-for="ComandaId" class="control-label">Comanda</label>
-        <select asp-for="ComandaId" class="form-control" asp-items="ViewBag.ComandaId" id="ComandaId">
+        <select asp-for="ComandaId" class="form-control" asp-items="ViewBag.ComandaId" id="ComandaId" data-voice="Seleccionar comanda">
             <option value="">Seleccione una comanda</option>
         </select>
 
@@ -21,8 +21,8 @@
     </div>
 
     <div class="form-group mt-3">
-        <input type="submit" value="Crear" class="btn btn-primary" />
-        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+        <input type="submit" value="Crear" class="btn btn-primary" data-voice="Guardar factura" />
+        <a asp-action="Index" class="btn btn-secondary" data-voice="Cancelar">Cancelar</a>
     </div>
 </form>
 

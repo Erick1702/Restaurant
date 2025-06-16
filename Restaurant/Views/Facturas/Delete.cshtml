@@ -26,8 +26,8 @@
 <form asp-action="DeleteConfirmed">
     <input type="hidden" asp-for="Id" />
     <div class="form-group mt-3">
-        <input type="submit" value="Eliminar" class="btn btn-danger" />
-        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+        <input type="submit" value="Eliminar" class="btn btn-danger" data-voice="Eliminar factura @Model.Id" />
+        <a asp-action="Index" class="btn btn-secondary" data-voice="Cancelar">Cancelar</a>
     </div>
 </form>
 

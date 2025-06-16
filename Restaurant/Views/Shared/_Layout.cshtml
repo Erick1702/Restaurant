@@ -28,44 +28,44 @@
                         @if (User.IsInRole(Constantes.ROL_ADMINISTRADOR))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Usuarios" asp-action="Listado">Usuarios</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Usuarios" asp-action="Listado" data-voice="Usuarios">Usuarios</a>
                             </li>
                         }
                         @if (User.IsInRole(Constantes.ROL_ADMINISTRADOR))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Estados" asp-action="">Estados</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Estados" asp-action="" data-voice="Estados" >Estados</a>
                             </li>
                         }
 
                         @if (User.IsInRole(Constantes.ROL_ADMINISTRADOR) || User.IsInRole(Constantes.ROL_MESERO))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Mesas" asp-action="">Mesas</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Mesas" asp-action="" data-voice="Mesas">Mesas</a>
                             </li>
                         }
                         @if (User.IsInRole(Constantes.ROL_ADMINISTRADOR) || User.IsInRole(Constantes.ROL_COCINERO))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="TipoPlatos" asp-action="">Tipo de Platos</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="TipoPlatos" asp-action="" data-voice="Tipo de platos">Tipo de Platos</a>
                             </li>
                         }
                         @if (User.IsInRole(Constantes.ROL_ADMINISTRADOR) || User.IsInRole(Constantes.ROL_COCINERO))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Platos" asp-action="">Platos</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Platos" asp-action="" data-voice="Platos">Platos</a>
                             </li>
                         }
                         @if (User.IsInRole(Constantes.ROL_ADMINISTRADOR) || User.IsInRole(Constantes.ROL_MESERO) || User.IsInRole(Constantes.ROL_COCINERO))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Comandas" asp-action="">Comandas</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Comandas" asp-action="" data-voice="Comandas">Comandas</a>
                             </li>
                         }
                         @if (User.IsInRole(Constantes.ROL_ADMINISTRADOR) || User.IsInRole(Constantes.ROL_CAJERO))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Facturas" asp-action="">Facturas</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Facturas" asp-action="" data-voice="Facturas">Facturas</a>
                             </li>
                         }
                         
@@ -78,6 +78,11 @@
 					
                 </div>
             </div>
+            <button id="toggleNarrador" type="button" class="narrador-btn">
+                🔊 Activar Narrador
+            </button>
+
+
         </nav>
     </header>
     <div class="container">
@@ -96,10 +101,47 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        let narradorActivo = false;
+
+        function hablar(texto) {
+            if (!narradorActivo || !('speechSynthesis' in window)) return;
+
+            const utterance = new SpeechSynthesisUtterance(texto);
+            utterance.lang = 'es-PE';
+            window.speechSynthesis.cancel();
+            window.speechSynthesis.speak(utterance);
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const btn = document.getElementById("toggleNarrador");
+            const campos = document.querySelectorAll("[data-voice]");
+
+            // Leer estado guardado en localStorage
+            const estadoGuardado = localStorage.getItem("narradorActivo");
+            narradorActivo = estadoGuardado === "true";
+
+            // Reflejar el estado en el botón
+            btn.textContent = narradorActivo ? "🚫 Desactivar Narrador" : "🔊 Activar Narrador";
+
+            // Evento click para alternar estado
+            btn.addEventListener("click", function () {
+                narradorActivo = !narradorActivo;
+                localStorage.setItem("narradorActivo", narradorActivo);
+                btn.textContent = narradorActivo ? "🚫 Desactivar Narrador" : "🔊 Activar Narrador";
+            });
+
+            // Activar narración por focus o mouse si está habilitado
+            campos.forEach(campo => {
+                campo.addEventListener("focus", () => hablar(campo.dataset.voice));
+                campo.addEventListener("mouseenter", () => hablar(campo.dataset.voice));
+            });
+        });
+    </script>
+
+
     @await RenderSectionAsync("Scripts", required: false)
-    <svg style="display: none;">
-        <use href="~/icons/sprite.svg"></use>
-    </svg>
+   
     
 </body>
 </html>
